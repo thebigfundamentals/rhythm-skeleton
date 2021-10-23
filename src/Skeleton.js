@@ -26,10 +26,13 @@ function Skeleton() {
         toggleCopy();
     };
     useEffect(() => {
-        if (isCopying) {
-            setTimeout(() => { toggleCopy() }, 500);
+        function toggle() {
+            toggleCopy();
         }
-    }, [isCopying]);
+        if (isCopying) {
+            setTimeout(() => { toggle() }, 500);
+        }
+    }, [isCopying]); // eslint-disable-line
     return (
         <div className='container d-flex flex-column'>
             <h1 className='text-center mt-3'>The Rhythm's Skeleton</h1>
