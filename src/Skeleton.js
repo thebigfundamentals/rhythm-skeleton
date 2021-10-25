@@ -1,23 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import useInputState from './hooks/useInputState';
 import useToggle from './hooks/useToggle';
+import useSkeletonState from './hooks/useSkeletonState';
 import sample from './sample';
 
 function Skeleton() {
     const [text, setText, handleTextChange] = useInputState('');
-    const [skeleton, setSkeleton] = useState('');
+    const {skeleton, makeSkeleton} = useSkeletonState('');
     const [isCopying, toggleCopy] = useToggle(false);
     const { saramago, joyce, woolf } = sample;
-    const makeSkeleton = (originalText) => {
-        const reSkeleton = new RegExp(/[^!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~—]/, 'gm');
-        const skeleton = originalText.replace(reSkeleton, '');
-        const skeletonArray = skeleton.split('');
-        let skeletonFinal = ''
-        for (let i = 0; i < skeletonArray.length; i++) {
-            skeletonFinal = skeletonFinal + '\u00A0' + skeletonArray[i]
-        };
-        setSkeleton(skeletonFinal);
-    };
     const handleSampleClick = (sample) => {
         setText(sample)
     };
@@ -26,11 +17,8 @@ function Skeleton() {
         toggleCopy();
     };
     useEffect(() => {
-        function toggle() {
-            toggleCopy();
-        }
         if (isCopying) {
-            setTimeout(() => { toggle() }, 500);
+            setTimeout(() => { toggleCopy() }, 500);
         }
     }, [isCopying]); // eslint-disable-line
     return (
